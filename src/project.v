@@ -6,7 +6,7 @@
 `default_nettype none
 
 module tt_um_fwilson12_mac (
-    input signed wire [7:0] ui_in,    // Dedicated inputs
+    input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
     output wire [7:0] uio_out,  // IOs: Output path
@@ -30,26 +30,29 @@ module tt_um_fwilson12_mac (
 		
 		// active lo sync reset
 		if (!rst_n) begin
-			acc <= 24'd0;
-			a <= 8'd0;
-			phase = 1'b0;
+			acc <= 24'sd0;
+			a <= 8'sd0;
+			phase <= 1'b0;
 		end
 		
 		// doin somethin 
 		else begin
-		
+			// phase is high: component a is loaded, component b is at ui_in; multiply them and add to accum 
 			if (phase) 
-				acc <= acc + (a * ui_in);
-		
-			else begin
-				a <= ui_in;
-				phase <= ~phase;
-			end
+				acc <= acc + (a * $signed(ui_in));
+
+			// phase is low; old component a is loaded, new component a is at ui_in; load it
+			else 
+				a <= $signed(ui_in);
+			
+			// update phase state
+			phase <= ~phase;
+
 		end
 	end
 
-
-	assign {uio_out, uo_out} = acc[15:0]
+	// uio_out reads middle byte of the accumulator, uo_out reads low byte
+	assign {uio_out, uo_out} = acc[15:0];
 
 	// List all unused inputs to prevent warnings
 	wire _unused = &{ena, uio_in, 1'b0};
