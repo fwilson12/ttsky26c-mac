@@ -50,8 +50,8 @@ module tt_um_fwilson12_mac (
 		end
 	end
 
-	// uio_out reads middle byte of the accumulator, uo_out reads low byte
-	assign {uio_out, uo_out} = acc[15:0];
+	// low two bytes when phase is low, high two bytes when phase is high
+	assign {uio_out, uo_out} = phase ? acc[23:8] : acc[15:0];
 
 	// List all unused inputs to prevent warnings
 	wire _unused = &{ena, uio_in, 1'b0};
