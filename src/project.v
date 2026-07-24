@@ -16,9 +16,8 @@ module tt_um_fwilson12_mac (
     input  wire       rst_n     // reset_n - low to reset
 	);
 
-	// All output pins must be assigned. If not used, assign to 0.
-	assign uio_oe = 8'd0;
-	//
+	// all 8 bits of bdir are input
+	assign uio_oe = 8'hFF;
 
 
 
