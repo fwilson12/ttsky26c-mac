@@ -8,6 +8,7 @@ chip is designed to process.
 """
 
 import random 
+from cocotb.types import LogicArray
 
 
 def dotProd(vec1: list[int], vec2: list[int]) -> int:
@@ -34,9 +35,9 @@ def randomVecs():
     the valid signed int8 range
 
     returns:
-        v1, v2: list[int] | two vectors initialized with 5-500 dimensions 
+        v1, v2: list[int] | two vectors initialized with 5-511 dimensions 
     """
-    listlen = random.randint(5, 512)
+    listlen = random.randint(5, 511)
 
     v1 = []
     v2 = []
@@ -52,15 +53,12 @@ def merge(hi16: int, lo16: int) -> int:
     # ensure the low byte of the high 16 bits == the high byte of the low 16 bits. inequality means the FSM phase is bugged 
     assert (hi16 & 0xFF) == (lo16 >> 8), f"phase out of sync: hi16={hi16:#06x} lo16={lo16:#06x}" 
 
-    # truncate to only the top byte then shift it back up to 24 bits wide, then OR it with the low two bytes 
+    # truncate to only the top byte then shift it back up to its 24 bit positioning, then OR it with the low two bytes 
     # this merges the hi and lo 16bit inputs, which share their lo and hi bytes, respectively
     unsignedMerged = ((hi16 >> 8) << 16) | lo16 
 
-    # create 0x800000 mask, if msb of unsigedMerged is 1, negative is true (two's complement)
-    negative = (1 << 23) & unsignedMerged
-
-    # if msb is 1, the true value is negative and its unsigend interpretation is off by 2* 2**23, or 2**24
-    return  unsignedMerged - 2**24 if negative else unsignedMerged 
+    return LogicArray.from_unsigned(unsignedMerged, 24).to_signed() # unsigned int -> log array -> signed int 
+    
 
 
 

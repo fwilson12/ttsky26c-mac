@@ -3,7 +3,11 @@
 
 import cocotb
 from cocotb.clock import Clock
-from cocotb.triggers import ClockCycles
+from cocotb.triggers import ClockCycles, Timer
+from cocotb.types import LogicArray
+
+from helpers import merge, dotProd, randomVecs
+
 
 
 @cocotb.test()
@@ -25,21 +29,37 @@ async def test_project(dut):
 
     dut._log.info("Test project behavior")
 
-    # Set the input values you want to test
-    # dut.ui_in.value = 20
 
-    # # Wait for one clock cycle to see the output values
-    # await ClockCycles(dut.clk, 1)
+    vec1, vec2 = randomVecs()
+    ref = dotProd(vec1, vec2)
+    acc_sum = 0
 
-    # dut.ui_in.value = 2
+    for i in range(len(vec1)):
 
-    # await ClockCycles(dut.clk, 1)
+        curLo = (dut.uio_out.value.to_unsigned() << 8) | (dut.uo_out.value.to_unsigned())
+        dut.ui_in.value = LogicArray.from_signed(vec1[i], 8)
+        await ClockCycles(dut.clk, 1)
+        await Timer(5, unit="ns") 
+
+        currHi = (dut.uio_out.value.to_unsigned() << 8) | (dut.uo_out.value.to_unsigned())
+        dut.ui_in.value = LogicArray.from_signed(vec2[i], 8)
+        await ClockCycles(dut.clk, 1)
+        await Timer(5, unit="ns") 
+
+        chip_acc = merge(currHi, curLo)
+        assert acc_sum == chip_acc, f"Mismatch check at pair {i}: current sum should be {acc_sum} but was {chip_acc}"
+
+        acc_sum += vec1[i] * vec2[i]
 
 
+    lastLo = (dut.uio_out.value.to_unsigned() << 8) | (dut.uo_out.value.to_unsigned())
+    await ClockCycles(dut.clk, 1)
+    await Timer(5, unit="ns") 
 
-    # # The following assersion is just an example of how to check the output values.
-    # # Change it to match the actual expected output of your module:
-    # assert dut.uo_out.value == 40 
+    lastHi = (dut.uio_out.value.to_unsigned() << 8) | (dut.uo_out.value.to_unsigned())
 
-    # Keep testing the module by changing the input values, waiting for
-    # one or more clock cycles, and asserting the expected output values.
+    chip_acc = merge(lastHi, lastLo)
+
+    assert ref == chip_acc
+    
+     
