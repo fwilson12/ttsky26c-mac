@@ -49,6 +49,10 @@ def randomVecs():
         
 
 def merge(hi16: int, lo16: int) -> int:
+    """
+    Takes two two-byte numbers that are the high two-bytes and low two-bytes of a 
+    three-byte value, and merges them via their shared (middle) byte.
+    """
 
     # ensure the low byte of the high 16 bits == the high byte of the low 16 bits. inequality means the FSM phase is bugged 
     assert (hi16 & 0xFF) == (lo16 >> 8), f"phase out of sync: hi16={hi16:#06x} lo16={lo16:#06x}" 
