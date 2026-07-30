@@ -18,20 +18,19 @@ async def test_project(dut):
     clock = Clock(dut.clk, 10, unit="us")
     cocotb.start_soon(clock.start())
 
-    # Reset
-    dut._log.info("Reset")
-    dut.ena.value = 1
-    dut.ui_in.value = 0
-    dut.uio_in.value = 0
-    dut.rst_n.value = 0
-    await ClockCycles(dut.clk, 10)
-    dut.rst_n.value = 1
+    async def reset():
+        # Reset
+        dut._log.info("Reset")
+        dut.ena.value = 1
+        dut.ui_in.value = 0
+        dut.uio_in.value = 0
+        dut.rst_n.value = 0
+        await ClockCycles(dut.clk, 10)
+        dut.rst_n.value = 1
 
     dut._log.info("Test project behavior")
 
-    
-
-    async def test(vec1: list[int], vec2: list[int]) -> None:
+    async def test(vec1: list[int], vec2: list[int], name: str) -> None:
         """
         Given two test vectors (5-511 dimensions, values in [-128, 127]) as lists,
         calculate their dot product, then stream them through the chip one pair at a time, 
@@ -93,24 +92,26 @@ async def test_project(dut):
         chip_acc = merge(lastHi, lastLo)
 
         # final check
-        assert ref == chip_acc
+        assert ref == chip_acc, f"Failed for test: {name} | expected {ref} but read {chip_acc}"
 
     # random test run
     randVec1, randVec2 = randomVecs()
-    test(randVec1, randVec2)
-
+    await test(randVec1, randVec2, "random")
 
     # max pos value edge case
+    reset()
     maxVec1 = [-128] * 511
     maxVec2 = [-128] * 511
-    test(maxVec1, maxVec2)
+    await test(maxVec1, maxVec2, "max positive")
 
     # max neg value edge case
+    reset()
     nMaxVec1 = [127] * 511
     nMaxVec2 = [-128] * 511
-    test(nMaxVec1, nMaxVec2)
+    await test(nMaxVec1, nMaxVec2, "max negative")
 
-    # zeroes
+    # zeros
+    reset()
     zeroVec1 = [0] * 100
     zeroVec2 = [42] * 100
-    test (zeroVec1, zeroVec2)
+    await test (zeroVec1, zeroVec2, "zeros")
