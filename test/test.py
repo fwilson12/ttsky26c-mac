@@ -95,6 +95,7 @@ async def test_project(dut):
         assert ref == chip_acc, f"Failed for test: {name} | expected {ref} but read {chip_acc}"
 
     # random test run
+    await reset()
     randVec1, randVec2 = randomVecs()
     await test(randVec1, randVec2, "random")
 
