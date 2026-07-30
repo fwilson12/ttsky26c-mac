@@ -99,19 +99,19 @@ async def test_project(dut):
     await test(randVec1, randVec2, "random")
 
     # max pos value edge case
-    reset()
+    await reset()
     maxVec1 = [-128] * 511
     maxVec2 = [-128] * 511
     await test(maxVec1, maxVec2, "max positive")
 
     # max neg value edge case
-    reset()
+    await reset()
     nMaxVec1 = [127] * 511
     nMaxVec2 = [-128] * 511
     await test(nMaxVec1, nMaxVec2, "max negative")
 
     # zeros
-    reset()
+    await reset()
     zeroVec1 = [0] * 100
     zeroVec2 = [42] * 100
     await test (zeroVec1, zeroVec2, "zeros")
