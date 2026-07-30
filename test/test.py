@@ -53,8 +53,12 @@ async def test_project(dut):
                         the accumulator's true three-byte value, the (hopefully) shared byte is useful for extra validation.
         """
 
+        # expected values 
         ref = dotProd(vec1, vec2)
         acc_sum = 0
+
+    
+        await reset()
 
         # for each component pair
         for i in range(len(vec1)):
@@ -95,24 +99,20 @@ async def test_project(dut):
         assert ref == chip_acc, f"Failed for test: {name} | expected {ref} but read {chip_acc}"
 
     # random test run
-    await reset()
     randVec1, randVec2 = randomVecs()
     await test(randVec1, randVec2, "random")
 
     # max pos value edge case
-    await reset()
     maxVec1 = [-128] * 511
     maxVec2 = [-128] * 511
     await test(maxVec1, maxVec2, "max positive")
 
     # max neg value edge case
-    await reset()
     nMaxVec1 = [127] * 511
     nMaxVec2 = [-128] * 511
     await test(nMaxVec1, nMaxVec2, "max negative")
 
     # zeros
-    await reset()
     zeroVec1 = [0] * 100
     zeroVec2 = [42] * 100
     await test (zeroVec1, zeroVec2, "zeros")
