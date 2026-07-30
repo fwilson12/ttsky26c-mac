@@ -48,14 +48,16 @@ def randomVecs():
     return v1, v2
         
 
-def merge(hi16: int, lo16: int) -> int:
+def merge(hi16: int, lo16: int, name: str) -> int:
     """
     Takes two two-byte numbers that are the high two-bytes and low two-bytes of a 
     three-byte value, and merges them via their shared (middle) byte.
+
+    Name identifies the current test run calling the helper (random vectors, max value, etc.)
     """
 
     # ensure the low byte of the high 16 bits == the high byte of the low 16 bits. inequality means the FSM phase is bugged 
-    assert (hi16 & 0xFF) == (lo16 >> 8), f"phase out of sync: hi16={hi16:#06x} lo16={lo16:#06x}" 
+    assert (hi16 & 0xFF) == (lo16 >> 8), f"phase out of sync during test {name}: hi16={hi16:#06x} lo16={lo16:#06x}" 
 
     # truncate to only the top byte then shift it back up to its 24 bit positioning, then OR it with the low two bytes 
     # this merges the hi and lo 16bit inputs, which share their lo and hi bytes, respectively
