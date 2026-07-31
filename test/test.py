@@ -28,8 +28,6 @@ async def test_project(dut):
         await ClockCycles(dut.clk, 10)
         dut.rst_n.value = 1
 
-    dut._log.info("Test project behavior")
-
     async def test(vec1: list[int], vec2: list[int], name: str) -> None:
         """
         Given two test vectors (5-511 dimensions, values in [-128, 127]) as lists,
@@ -93,11 +91,14 @@ async def test_project(dut):
         lastHi = (dut.uio_out.value.to_unsigned() << 8) | (dut.uo_out.value.to_unsigned())
 
         # final accumulator readout
-        chip_acc = merge(lastHi, lastLo)
+        chip_acc = merge(lastHi, lastLo, name)
 
         # final check
         assert ref == chip_acc, f"Failed for test: {name} | expected {ref} but read {chip_acc}"
 
+
+    dut._log.info("Test project behavior")
+    
     # random test run
     randVec1, randVec2 = randomVecs()
     await test(randVec1, randVec2, "random")
