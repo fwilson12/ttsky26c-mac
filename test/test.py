@@ -78,7 +78,7 @@ async def test_project(dut):
             await Timer(5, unit="ns") 
 
             # take the high two and low two bytes from the past acc reg's state and merge them at their middle byte, giving us a 24-bit value for what the acc reg currently stores. assert it matches the python model
-            chip_acc = merge(currHi, curLo)
+            chip_acc = merge(currHi, curLo, name)
             assert acc_sum == chip_acc, f"Mismatch check at pair {i}: current sum should be {acc_sum} but was {chip_acc}"
 
             # add component product to running ref. sum
