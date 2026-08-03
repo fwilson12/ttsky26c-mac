@@ -20,10 +20,10 @@ module tt_um_fwilson12_mac (
 	assign uio_oe = 8'hFF;
 
 
-
-	reg signed [23:0] acc = 24'd0;
-	reg signed [7:0] a = 8'h00;
-	reg phase = 1'b0;
+	// (* keep *) is for yosys rtl schematic readability
+	(* keep *) reg signed [23:0] acc = 24'd0;
+	(* keep *) reg signed [7:0] a = 8'h00;
+	(* keep *) reg phase = 1'b0;
 
 	always @(posedge clk) begin
 		
