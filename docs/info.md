@@ -60,16 +60,20 @@ acc[23:0] = ((hi16 >> 8) << 16) | lo16
 
 ### Example
 
+![](waveform.png)
+
 `x = [100, -50]`, `y = [-30, 40]`, so the dot product is `100 * -30 + -50 * 40 = -5000`.
 
-| Edge | `ui_in`      | Phase | `uio_out` | `uo_out` | Accumulator shown |
-| ---- | ------------ | ----- | --------- | -------- | ----------------- |
-| 0    | `dont care`  | 0a    | `0x00`    | `0x00`   | 0, low half       |
-| 1    | `0x64` (100) | 1a    | `0x00`    | `0x00`   | 0, high half      |
-| 2    | `0xE2` (-30) | 0b    | `0xF4`    | `0x48`   | -3000, low half   |
-| 3    | `0xCE` (-50) | 1b    | `0xFF`    | `0xF4`   | -3000, high half  |
-| 4    | `0x28` (40)  | 0c    | `0xEC`    | `0x78`   | -5000, low half   |
-| 5    | `dont care`  | 1c    | `0xFF`    | `0xEC`   | -5000, high half  |
+Each row is one phase interval: `ui_in` is the value presented during it, the outputs are what the design drives during it, and the edge that ends it does the capture or the accumulate.
+
+| Phase | `ui_in`           | What the closing edge does  | `uio_out` | `uo_out` | `acc` holds        |
+| ----- | ----------------- | --------------------------- | --------- | -------- | ------------------ |
+| 0a    | `0x64` (100) = x0 | `a <= 100`                  | `0x00`    | `0x00`   | `0x000000` (0)     |
+| 1a    | `0xE2` (-30) = y0 | `acc <= acc + 100 * -30`    | `0x00`    | `0x00`   | `0x000000` (0)     |
+| 0b    | `0xCE` (-50) = x1 | `a <= -50`                  | `0xF4`    | `0x48`   | `0xFFF448` (-3000) |
+| 1b    | `0x28` (40) = y1  | `acc <= acc + -50 * 40`     | `0xFF`    | `0xF4`   | `0xFFF448` (-3000) |
+| 0c    | `dont care`       | drain edge, `acc` untouched | `0xEC`    | `0x78`   | `0xFFEC78` (-5000) |
+| 1c    | `dont care`       | &mdash;                     | `0xFF`    | `0xEC`   | `0xFFEC78` (-5000) |
 
 Reassembling the final phase pair's outputs: `hi16 = 0xFFEC`, `lo16 = 0xEC78`, => `0xFFEC78`, which sign extends to `-5000`
 
