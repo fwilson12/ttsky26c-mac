@@ -90,5 +90,11 @@ make GATES=yes  # gate-level simulation against the hardened netlist
 
 ## More
 
-- [Project datasheet source](docs/info.md)
-- [Tiny Tapeout](https://tinytapeout.com)
+- [Project datasheet](docs/info.md)
+
+## Tiny Tapeout
+
+- Project page: https://tinytapeout.com
+- [FAQ](https://tinytapeout.com/faq/)
+- [Digital design lessons](https://tinytapeout.com/digital_design/)
+- [Submit a design](https://app.tinytapeout.com/)
