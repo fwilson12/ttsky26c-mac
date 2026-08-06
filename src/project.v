@@ -16,14 +16,13 @@ module tt_um_fwilson12_mac (
     input  wire       rst_n     // reset_n - low to reset
 	);
 
-	// all 8 bits of bdir are input
+	// all 8 bits of bdir are output
 	assign uio_oe = 8'hFF;
 
-
-	// (* keep *) is for yosys rtl schematic readability
-	(* keep *) reg signed [23:0] acc = 24'd0;
-	(* keep *) reg signed [7:0] a = 8'h00;
-	(* keep *) reg phase = 1'b0;
+	// running accumulator, operand reg, state register
+	reg signed [23:0] acc;
+	reg signed [7:0] a;
+	reg phase;
 
 	always @(posedge clk) begin
 		
