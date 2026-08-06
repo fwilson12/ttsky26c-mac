@@ -25,7 +25,7 @@ The pin constraints drove the rest of the design. Frontier accelerators work mai
 | `ui_in[7:0]`  | In  | Operand, signed int8 (two's complement)                    |
 | `uo_out[7:0]` | Out | Accumulator byte, depends on phase                         |
 | `uio[7:0]`    | Out | Accumulator byte, depends on phase                         |
-| `clk`         | In  | Clock. One component per edge, so one pair every two edges |
+| `clk`         | In  | Clock. One component per edge, so one pair per two edges   |
 | `rst_n`       | In  | Active low synchronous reset. Clears accumulator and phase |
 
 `uio_in` is unused.
