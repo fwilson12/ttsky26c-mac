@@ -1,10 +1,10 @@
-![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg) ![](../../workflows/fpga/badge.svg)
+![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg)
 
 # int8 MAC
 
-A multiply-accumulate unit that computes the dot product of two time-multiplexed signed int8 vectors, with its 24-bit signed accumulator sampled over two clock cycles.
+A multiply-accumulate unit that computes the dot product of two signed int8 vectors, time-multiplexing the operands onto a single 8-bit port and reading its 24-bit signed accumulator back over two clock cycles.
 
-[**Explore the layout in 3D**](https://gds-viewer.tinytapeout.com/?pdk=sky130A&model=https%3A%2F%2Ffwilson12.github.io%2Ftt-sky26c-mac%2F%2Ftinytapeout.oas)
+[**view in 3D**](https://gds-viewer.tinytapeout.com/?pdk=sky130A&model=https%3A%2F%2Ffwilson12.github.io%2Ftt-sky26c-mac%2F%2Ftinytapeout.oas)
 
 ![](gds_render.png)
 
