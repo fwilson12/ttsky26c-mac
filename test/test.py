@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: © 2024 Tiny Tapeout
+# SPDX-FileCopyrightText: © 2026 Tiny Tapeout
 # SPDX-License-Identifier: Apache-2.0
 
 import cocotb
@@ -48,7 +48,7 @@ async def test_project(dut):
 
                 Output: The high 16 bits of the accumulator's previous state are read; high byte from uio_out, middle byte from uo_out. Note that we've captured the middle byte of the 24-bit
                         reg twice; while just a by-product of capturing a 3 byte output by reading two pairs of two bytes, when the high two bytes are merged with the low two bytes to reconstruct
-                        the accumulator's true three-byte value, the (hopefully) shared byte is useful for extra validation.
+                        the accumulator's true three-byte value, the shared byte is useful for extra validation.
         """
 
         # expected values 

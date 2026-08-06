@@ -34,7 +34,7 @@ module tt_um_fwilson12_mac (
 			phase <= 1'b0;
 		end
 		
-		// doin somethin 
+		// main block 
 		else begin
 			// phase is high: component a is loaded, component b is at ui_in; multiply them and add to accum 
 			if (phase) 

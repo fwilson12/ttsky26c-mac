@@ -20,7 +20,7 @@ def dotProd(vec1: list[int], vec2: list[int]) -> int:
         vec2: list[int] | second vector, maybe the activation vector for the neuron layer n - 1  
     
     returns:
-        their dot product lol
+        their dot product 
     """
     assert len(vec1) == len(vec2), f"vectors must be the same size | vec1: {len(vec1)}, vec2: {len(vec2)}"
 
