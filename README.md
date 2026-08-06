@@ -14,7 +14,7 @@ This is a single multiply-accumulate (MAC) unit, a fundamental building block of
 
 Given the area constraint, I adapted the role of my MAC so it could still do useful ML math. Instead of receiving an activation from a neighboring PE and multiplying it by a stored weight, it takes two vector components at a time, multiplies them, and adds the product to a running total in an accumulator register. Basically, one MAC performs the job an entire column of systolic PEs would: computing the dot product of two vectors.
 
-The pin constraints drove the rest of the design. Frontier accelerators work mainly with bf16, but at this scale I opted for signed int8 components. Multiplying two 8-bit operands needs 16 input bits and only 8 are available, so the operands are time-multiplexed by a two-state FSM. Reading the result has the same problem in reverse: a 24-bit accumulator doesn't fit on 8 output pins, so all 8 bidirectional pins are configured as outputs (`uio_oe = 8'hFF`) and the accumulator is sambled out over two cycles using the same phase bit.
+The pin constraints drove the rest of the design. Frontier accelerators work mainly with bf16, but at this scale I opted for signed int8 components. Multiplying two 8-bit operands needs 16 input bits and only 8 are available, so the operands are time-multiplexed by a two-state FSM. Reading the result has the same problem in reverse: a 24-bit accumulator doesn't fit on 8 output pins, so all 8 bidirectional pins are configured as outputs (`uio_oe = 8'hFF`) and the accumulator is read out over two cycles using the same phase bit.
 
 ![](docs/datapath.svg)
 
