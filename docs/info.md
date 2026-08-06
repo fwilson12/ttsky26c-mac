@@ -75,7 +75,7 @@ Each row is one phase interval: `ui_in` is the value presented during it, the ou
 | 0c    | `dont care`       | drain edge, `acc` untouched | `0xEC`    | `0x78`   | `0xFFEC78` (-5000) |
 | 1c    | `dont care`       | &mdash;                     | `0xFF`    | `0xEC`   | `0xFFEC78` (-5000) |
 
-Reassembling the final phase pair's outputs: `hi16 = 0xFFEC`, `lo16 = 0xEC78`, => `0xFFEC78`, which sign extends to `-5000`
+Reassembling the final phase pair's outputs: `hi16 = 0xFFEC`, `lo16 = 0xEC78`, => `0xFFEC78` = `-5000`
 
 ### Range
 
