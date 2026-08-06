@@ -70,10 +70,10 @@ async def test_project(dut):
             await Timer(5, unit="ns") 
 
             # phase = 1: the high 16 bits of past acc state are visible: upper 8 via bdir uio_out, lower 8 via uo_out
-            currHi = (dut.uio_out.value.to_unsigned() << 8) | (dut.uo_out.value.to_unsigned()) # same shift; upper byte shited up to its place and merged w/ low byte
+            currHi = (dut.uio_out.value.to_unsigned() << 8) | (dut.uo_out.value.to_unsigned()) # same shift; upper byte shifted up to its place and merged w/ low byte
             dut.ui_in.value = LogicArray.from_signed(vec2[i], 8) # expose second component of new pair, chip performs the multiplication and adds to the acc register
 
-            # back to phase 0; the results from the multiplication/addition that just occured will be visible upon the next iteration 
+            # back to phase 0; the results from the multiplication/addition that just occurred will be visible upon the next iteration 
             await ClockCycles(dut.clk, 1)
             await Timer(5, unit="ns") 
 
@@ -100,8 +100,9 @@ async def test_project(dut):
     dut._log.info("Test project behavior")
     
     # random test run
-    randVec1, randVec2 = randomVecs()
-    await test(randVec1, randVec2, "random")
+    for _ in range(50):
+        randVec1, randVec2 = randomVecs()
+        await test(randVec1, randVec2, "random")
 
     # max pos value edge case
     maxVec1 = [-128] * 511
