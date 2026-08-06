@@ -1,5 +1,5 @@
 """
-Simple helper functions that instatiate randomized test vectors and calculates their dot prodcuts 
+Simple helper functions that instantiate randomized test vectors and calculates their dot products 
 to test the chip against. 
 
 If you couldn't tell by their names, dotProd() calculates and returns the dot product of two vectors (list[int])

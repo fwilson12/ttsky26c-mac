@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: © 2026 Tiny Tapeout
+# SPDX-FileCopyrightText: © 2026 Fletcher Wilson
 # SPDX-License-Identifier: Apache-2.0
 
 import cocotb
